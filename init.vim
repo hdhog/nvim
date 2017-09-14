@@ -2,18 +2,28 @@
 "
 if has("unix")
     if has("nvim")
-	let vim_plug_root="~/.local/share/nvim"
-	let vim_plug_plugged= vim_plug_root ."/plugged"
-	let vim_plug=vim_plug_root . "/site/autoload/plug.vim"
+	    let vim_plug_root="~/.local/share/nvim"
+    	let vim_plug_plugged= vim_plug_root ."/plugged"
+	    let vim_plug=vim_plug_root . "/site/autoload/plug.vim"
     elseif has("vim")
     endif
+elseif has("win32")
+	let vim_plug_root="~\\AppData\\Local\\nvim"
+    let vim_plug_plugged= vim_plug_root ."\\plugged"
+	let vim_plug=vim_plug_root . "\\autoload\\plug.vim"
 endif
 "---------------------------=== Install vim-plug ===----------------------------
 "
 if empty(glob(vim_plug))
-    silent !curl -fLo vim_plug --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-      autocmd VimEnter * PlugInstall | source $MYVIMRC
+    if has("unix")
+        silent !curl -fLo vim_plug --create-dirs
+            \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    elseif has("win32") 				
+		let setup_script = vim_plug_root . "\\install-vimplug.ps1"		
+        silent execute "!powershell.exe " . setup_script
+    endif
+    
+    autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
 "--------------------------=== Plugins difinitions ===--------------------------
 "
@@ -30,15 +40,16 @@ Plug 'majutsushi/tagbar'          	" Class/module browser
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdcommenter'		" Nerd comment
 Plug 'fisadev/FixedTaskList.vim'  	" Pending tasks list
-Plug 'tpope/vim-surround'	   	" Parentheses, brackets, quotes, XML tags, and more
+Plug 'tpope/vim-surround'	   	    " Parentheses, brackets, quotes, XML tags, and more
 Plug 'Valloric/MatchTagAlways'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'AndrewRadev/splitjoin.vim'
 "---------------------------=== Snippets support ===----------------------------
 "
-Plug 'garbas/vim-snipmate'		" Snippets manager
+Plug 'garbas/vim-snipmate'		    " Snippets manager
 Plug 'MarcWeber/vim-addon-mw-utils'	" dependencies #1
-Plug 'tomtom/tlib_vim'			" dependencies #2
-Plug 'honza/vim-snippets'		" snippets repo
+Plug 'tomtom/tlib_vim'			    " dependencies #2
+Plug 'honza/vim-snippets'		    " snippets repo
 Plug 'SirVer/ultisnips'
 "--------------------=== Language and complation plugins ===--------------------
 "
@@ -51,74 +62,84 @@ Plug 'ervandew/supertab'
 Plug 'fatih/vim-go'
 Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.local/share/nvim/gocode/vim/symlink.sh' }
 
+"---------------------------------=== Other ===---------------------------------
+"
+Plug 'tpope/vim-fugitive'
+
 
 call plug#end()
 "-------------------------=== Global Configuration ===--------------------------
 "
-colorscheme hybrid  " Цветовая тема
+colorscheme hybrid                  " Цветовая тема
 set background=dark
-set numberwidth=1              " Keep line numbers small if it's shown
-syntax on 		" Подсветка синтаксиса
-filetype on 		" Настройки для типов файлов
-filetype plugin on 	" Типы файлов
-filetype indent on 	" отпусты по типу файлов
-set fo+=cr 		" Что то с Enter при вызове меню
-set wrap 		" (no)wrap - динамический (не)перенос длинных строк
-set linebreak 		" переносить целые слова
-set cin			" Отступы в стиле С
-set lz			" Ленивая перерисовка экрана
-set autoindent 		" автоматический отступ
-set autoread 		" перечитывать изменённые файлы автоматически
+set numberwidth=1                   " Keep line numbers small if it's shown
+syntax on 		                    " Подсветка синтаксиса
+filetype on 		                " Настройки для типов файлов
+filetype plugin on 	                " Типы файлов
+filetype indent on 	                " отпусты по типу файлов
+set fo+=cr 		                    " Что то с Enter при вызове меню
+set wrap 		                    " (no)wrap - динамический (не)перенос длинных строк
+set linebreak 		                " переносить целые слова
+set cin			                    " Отступы в стиле С
+set lz			                    " Ленивая перерисовка экрана
+set autoindent 		                " автоматический отступ
+set autoread 		                " перечитывать изменённые файлы автоматически
 set backspace=indent,eol,start whichwrap+=<,>,[,] "Удобное поведение backspace
-set ch=1                " Сделать строку команд высотой в одну строку
-set completeopt=menu 	" только доступные варианты автодополнени 		" не использовать свап файл для сброса буферовя
-set foldcolumn=3 	" Колоночка, чтобы показывать плюсики для скрытия блоков кода:
-set foldenable 		" Включить сворачивание блоков кода
-set foldlevelstart=100  " Первые 100 блоков будет развернуты остальные свернуты
-set foldmethod=indent 	" Тип сворачивания. по отступам
-set hlsearch   		" Включаем подсветку выражения, которое ищется в тексте
-set ignorecase 		" Игнорировать регистр букв при поиске
-set incsearch           " Поиск по набору текста (очень полезная функция)
-set incsearch  		" При поиске перескакивать на найденный текст в процессе набора строки
-set laststatus=2        " Всегда отображать статусную строку для каждого окна
-set linebreak 		" Перенос целых сло Перенос целых словв
-set mouse=a 		" Поодержка мыши при работе в терминале
-set nobackup 		" Вырубаем .swp и ~ (резервные) файлы
-set nocompatible        " Включаем несовместимость настроек с Vi (ибо Vi нам и не понадобится).
-set noswapfile 		" не использовать свап файл для сброса буферов
-set hidden 		" не выгружать буфер когда переключаешься на другой
-set novisualbell        " Выключаем надоедливый "звонок" (моргает, а не бибикает при ошибках)
-set nowrapscan 		" Останавливать поиск при достижении конца файла
-set nu 			" Нумерация строк
-set ruler             	" Показывать положение курсора всё время.
+set ch=1                            " Сделать строку команд высотой в одну строку
+set completeopt=menu 	            " только доступные варианты автодополнени 		" не использовать свап файл для сброса буферовя
+" set foldcolumn=3 	                " Колоночка, чтобы показывать плюсики для скрытия блоков кода:
+set foldenable 		                " Включить сворачивание блоков кода
+set foldlevelstart=100              " Первые 100 блоков будет развернуты остальные свернуты
+set foldmethod=indent 	            " Тип сворачивания. по отступам
+set hlsearch   		                " Включаем подсветку выражения, которое ищется в тексте
+set ignorecase 		                " Игнорировать регистр букв при поиске
+set incsearch                       " Поиск по набору текста (очень полезная функция)
+set incsearch  		                " При поиске перескакивать на найденный текст в процессе набора строки
+set laststatus=2                    " Всегда отображать статусную строку для каждого окна
+set linebreak 		                " Перенос целых сло Перенос целых словв
+set mouse=a 		                " Поодержка мыши при работе в терминале
+set nobackup 		                " Вырубаем .swp и ~ (резервные) файлы
+set nocompatible                    " Включаем несовместимость настроек с Vi (ибо Vi нам и не понадобится).
+set noswapfile 		                " не использовать свап файл для сброса буферов
+set hidden 		                    " не выгружать буфер когда переключаешься на другой
+set novisualbell                    " Выключаем надоедливый "звонок" (моргает, а не бибикает при ошибках)
+set nowrapscan 		                " Останавливать поиск при достижении конца файла
+set nu 			                    " Нумерация строк
+set ruler             	            " Показывать положение курсора всё время.
 set sessionoptions=curdir,buffers,tabpages                      " Опции сессий
-set shiftwidth=8 	" размер отступов (нажатие на << или >>)
-set showcmd 		" Показывать незавершенные команды в статус баре
-set showmatch 		" показывать первую парную скобку после ввода второй
+set shiftwidth=8 	                " размер отступов (нажатие на << или >>)
+set showcmd 		                " Показывать незавершенные команды в статус баре
+set showmatch 		                " показывать первую парную скобку после ввода второй
 set showtabline=1
-set smartindent 	" Умные отступы
+set smartindent 	                " Умные отступы
 set smarttab
 set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
 set splitbelow
-set title 		" показывать имя буфера в заголовке терминала
-set whichwrap=b,<,>,[,],l,h " перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
-set t_Co=256 		" использовать больше цветов в терминале
-set matchpairs+=<:> 	" показывать совпадающие скобки для HTML-тегов
+set title 		                    " показывать имя буфера в заголовке терминала
+set whichwrap=b,<,>,[,],l,h         " перемещать курсор на следующую строку при нажатии на клавиши вправо-влево и пр.
+set t_Co=256 		                " использовать больше цветов в терминале
+set matchpairs+=<:> 	            " показывать совпадающие скобки для HTML-тегов
 set statusline=%<%f%h%m%r%=format=%{&fileformat}\ file=%{&fileencoding}\ enc=%{&encoding}\ %b\ 0x%B\ %l,%c%V\ %P
-
-set ttyfast
-set undolevels=2048 " хранить историю изменений числом N
+set undolevels=2048                 " хранить историю изменений числом N
 set wildmode=longest,list,full
 set wildmenu
 "Проблема красного на красном при spellchecking-е решается такой строкой в .vimrc
 highlight SpellBad ctermfg=Black ctermbg=Red
-set completeopt-=preview
-set completeopt+=longest
+"set completeopt-=preview
+"set completeopt+=longest
+set pumheight=10                    " Completion window max size
+set hidden                          " Buffer should still exist if window is closed
+set completeopt=menu,menuone        " Show popup menu, even if there is one entry
 set mps-=[:]
-
+set ttyfast
 "-------------------------=== PLUGINS CONFIGURATION ===-------------------------
 "
-"----------------------------=== MatchTagAlways ===-----------------------------
+"----------------------------=== Nerd commenter ===-----------------------------
+"
+let g:NERDSpaceDelims = 1 " Add spaces after comment delimiters by default
+let g:NERDCompactSexyComs = 1 " Use compact syntax for prettified multi-line comments
+let g:NERDTrimTrailingWhitespace = 1 " Enable trimming of trailing whitespace when uncommenting
+" ----------------------------=== MatchTagAlways ===-----------------------------
 "
 let g:mta_use_matchparen_group = 1
 let g:mta_filetypes = {
@@ -252,6 +273,4 @@ endfunction
 
 
 command! -nargs=* FComment call FancySmancyComment( '<args>' )
-
-
 
