@@ -181,6 +181,11 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#syntastic#enabled = 1
+let airline#extensions#syntastic#error_symbol = 'E:'
+let airline#extensions#syntastic#stl_format_err = '%E{[%e(#%fe)]}'
+let airline#extensions#syntastic#warning_symbol = 'W:'
+let airline#extensions#syntastic#stl_format_err = '%W{[%w(#%fw)]}'
 let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
@@ -218,7 +223,7 @@ let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 "-------------------------------=== Syntastic ===-------------------------------
 "
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_enable_signs=1
@@ -235,8 +240,7 @@ nnoremap N Nzzzv
 map <C-n> :cnext<CR>
 map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
-map <F6><F6> :lnext<CR>
-nnoremap <leader><F6> :lclose<CR>
+
 "---------------------------------=== Save ===----------------------------------
 "
 nmap <F4> :w!<CR>
@@ -257,6 +261,9 @@ vmap <F3> <Esc>:TagbarToggle<CR>
 map <F6> :SyntasticCheck<CR>
 imap <F6> <Esc>:SyntasticCheck<CR>
 vmap <F6> <Esc>:SyntasticCheck<CR>
+
+map <F6><F6> :lnext<CR>
+nnoremap <F6><Esc> :SyntasticReset<CR>
 "-------------------------------=== NerdTree ===--------------------------------
 "
 map <F2> :NERDTreeToggle<CR>
