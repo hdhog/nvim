@@ -1,5 +1,6 @@
 "---------------------------=== Set plugins Path ===----------------------------
 "
+let vim_plug_url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 if has("unix")
     if has("nvim")
 	    let vim_plug_root="~/.local/share/nvim"
@@ -16,14 +17,13 @@ endif
 "
 if empty(glob(vim_plug))
     if has("unix")
-        silent !curl -fLo vim_plug --create-dirs
-            \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    elseif has("win32") 				
-		let setup_script = vim_plug_root . "\\install-vimplug.ps1"		
+        silent execute "!curl --create-dirs " . vim_plug_url . " -fLo " . vim_plug
+    elseif has("win32")
+		let setup_script = vim_plug_root . "\\install-vimplug.ps1"
         silent execute "!powershell.exe " . setup_script
     endif
-    
-    autocmd VimEnter * PlugInstall | source $MYVIMRC
+
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 "--------------------------=== Plugins difinitions ===--------------------------
 "
@@ -35,22 +35,24 @@ Plug 'vim-airline/vim-airline'   	    	" Lean & mean status/tabline for vim
 Plug 'vim-airline/vim-airline-themes'
 "------------------------=== Code/project navigation ===------------------------
 "
-Plug 'scrooloose/nerdtree' 	    	" Project and file navigation
-Plug 'majutsushi/tagbar'          	" Class/module browser
+Plug 'scrooloose/nerdtree' 	    	        " Project and file navigation
+Plug 'majutsushi/tagbar'          	        " Class/module browser
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'scrooloose/nerdcommenter'		" Nerd comment
-Plug 'fisadev/FixedTaskList.vim'  	" Pending tasks list
-Plug 'tpope/vim-surround'	   	    " Parentheses, brackets, quotes, XML tags, and more
+Plug 'scrooloose/nerdcommenter'		        " Nerd comment
+Plug 'fisadev/FixedTaskList.vim'  	        " Pending tasks list
+Plug 'tpope/vim-surround'	   	            " Parentheses, brackets, quotes, XML tags, and more
 Plug 'Valloric/MatchTagAlways'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'vim-syntastic/syntastic'
 "---------------------------=== Snippets support ===----------------------------
 "
+Plug 'SirVer/ultisnips'
 Plug 'garbas/vim-snipmate'		    " Snippets manager
 Plug 'MarcWeber/vim-addon-mw-utils'	" dependencies #1
 Plug 'tomtom/tlib_vim'			    " dependencies #2
 Plug 'honza/vim-snippets'		    " snippets repo
-Plug 'SirVer/ultisnips'
 "--------------------=== Language and complation plugins ===--------------------
 "
 "---------------------------------=== Other ===---------------------------------
@@ -59,19 +61,16 @@ Plug 'Shougo/neocomplete.vim'
 Plug 'ervandew/supertab'
 "----------------------------------=== Go ===-----------------------------------
 "
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'for': 'go' , 'do': ':GoInstallBinaries' }
 Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.local/share/nvim/gocode/vim/symlink.sh' }
 
 "---------------------------------=== Other ===---------------------------------
 "
 Plug 'tpope/vim-fugitive'
 
-
 call plug#end()
 "-------------------------=== Global Configuration ===--------------------------
 "
-colorscheme hybrid                  " Цветовая тема
-set background=dark
 set numberwidth=1                   " Keep line numbers small if it's shown
 syntax on 		                    " Подсветка синтаксиса
 filetype on 		                " Настройки для типов файлов
@@ -132,6 +131,13 @@ set hidden                          " Buffer should still exist if window is clo
 set completeopt=menu,menuone        " Show popup menu, even if there is one entry
 set mps-=[:]
 set ttyfast
+silent! colorscheme hybrid                  " Цветовая тема
+set background=dark
+
+if has('unnamedplus')
+  set clipboard^=unnamed
+  set clipboard^=unnamedplus
+endif
 "-------------------------=== PLUGINS CONFIGURATION ===-------------------------
 "
 "----------------------------=== Nerd commenter ===-----------------------------
@@ -203,33 +209,59 @@ let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
+let g:go_addtags_transform = "camelcase"
 let g:go_fmt_command = "goimports"
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'varcheck']
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 
+"-------------------------------=== Syntastic ===-------------------------------
+"
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_enable_signs=1
 "-------------------------------=== Key maps ===--------------------------------
 "
 "----------------------------------=== vim ===----------------------------------
 "
+" Search mappings: These will make it so that going to the next one in a
+" search will center on the line it's found in.
+nnoremap n nzzzv
+nnoremap N Nzzzv
+" Jump to next error with Ctrl-n and previous error with Ctrl-m. Close the
+" quickfix window with <leader>a
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
+map <F6><F6> :lnext<CR>
+nnoremap <leader><F6> :lclose<CR>
 "---------------------------------=== Save ===----------------------------------
+"
 nmap <F4> :w!<CR>
 imap <F4> <Esc>:w!<CR>
 vmap <F4> <Esc>:w!<CR>
 "-------------------------------=== Exit VIM ===--------------------------------
+"
 nmap <F5> :qa!<CR>
 imap <F5> <Esc>:qa!<CR>
 vmap <F5> <Esc>:qa!<CR>
 "--------------------------------=== TagBar ===---------------------------------
 "
-map <F2> :TagbarToggle<CR>
-imap <F2> <Esc>:TagbarToggle<CR>
-vmap <F2> <Esc>:TagbarToggle<CR>
+map <F3> :TagbarToggle<CR>
+imap <F3> <Esc>:TagbarToggle<CR>
+vmap <F3> <Esc>:TagbarToggle<CR>
+"-------------------------------=== Syntastic ===-------------------------------
+"
+map <F6> :SyntasticCheck<CR>
+imap <F6> <Esc>:SyntasticCheck<CR>
+vmap <F6> <Esc>:SyntasticCheck<CR>
 "-------------------------------=== NerdTree ===--------------------------------
 "
-map <F3> :NERDTreeToggle<CR>
-imap <F3> :NERDTreeToggle<CR>
-vmap <F3> :NERDTreeToggle<CR>
+map <F2> :NERDTreeToggle<CR>
+imap <F2> :NERDTreeToggle<CR>
+vmap <F2> :NERDTreeToggle<CR>
 "-----------------------------=== Nerdcommenter ===-----------------------------
 "
 if has('macunix')
@@ -246,22 +278,36 @@ endif
 "
 "----------------------------------=== Go ===-----------------------------------
 "
-au FileType go set sw=4
-au FileType go set ts=4
-au FileType go set sts=4
-au FileType go nmap <leader>r <Plug>(go-run)
-au FileType go nmap <leader>b <Plug>(go-build)
-au FileType go nmap <leader>t <Plug>(go-test)
-au FileType go nmap <leader>c <Plug>(go-coverage)
-au FileType go nmap <Leader>ds <Plug>(go-def-split)
-au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
-au FileType go nmap <Leader>dt <Plug>(go-def-tab)
-au FileType go nmap <Leader>i <Plug>(go-info)
+augroup go
+    autocmd!
+    au FileType go set sw=4
+    au FileType go set ts=4
+    au FileType go set sts=4
+    au FileType go nmap <leader>r <Plug>(go-run)
+    au FileType go nmap <leader>b <Plug>(go-build)
+    au FileType go nmap <leader>t <Plug>(go-test)
+    au FileType go nmap <leader>c <Plug>(go-coverage-toggle)
+    au FileType go nmap <Leader>ds <Plug>(go-def-split)
+    au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+    au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+    au FileType go nmap <Leader>i <Plug>(go-info)
+augroup END
+
+"--------------------------------=== Python ===---------------------------------
+"
+augroup python
+    autocmd!
+    au FileType python set sw=4
+    au FileType python set ts=4
+    au FileType python set sts=4
+augroup END
+
+"---------------------------------=== Other ===---------------------------------
+"
+au FileType crontab,fstab,make set noexpandtab tabstop=8 shiftwidth=8
 
 "-------------------------------=== Functions ===-------------------------------
 " FancySmancyComment(text, fill_char, width)
-" Create comment string with centered text
-" All arguments are optional
 function! FancySmancyComment(...)
   let text = "=== " . get(a:000, 0, '') . " ==="
   let fill = get(a:000, 1, '-')[0]
@@ -270,7 +316,6 @@ function! FancySmancyComment(...)
   let right = width - left
   put=printf(&commentstring, repeat(fill, left) . text . repeat(fill, right))
 endfunction
-
 
 command! -nargs=* FComment call FancySmancyComment( '<args>' )
 
