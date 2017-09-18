@@ -71,6 +71,8 @@ Plug 'tpope/vim-fugitive'
 call plug#end()
 "-------------------------=== Global Configuration ===--------------------------
 "
+silent! colorscheme hybrid          " Цветовая тема
+set background=dark
 set numberwidth=1                   " Keep line numbers small if it's shown
 syntax on 		                    " Подсветка синтаксиса
 filetype on 		                " Настройки для типов файлов
@@ -131,13 +133,13 @@ set hidden                          " Buffer should still exist if window is clo
 set completeopt=menu,menuone        " Show popup menu, even if there is one entry
 set mps-=[:]
 set ttyfast
-silent! colorscheme hybrid                  " Цветовая тема
-set background=dark
+set termguicolors
 
 if has('unnamedplus')
   set clipboard^=unnamed
   set clipboard^=unnamedplus
 endif
+
 "-------------------------=== PLUGINS CONFIGURATION ===-------------------------
 "
 "----------------------------=== Nerd commenter ===-----------------------------
