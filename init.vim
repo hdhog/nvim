@@ -57,13 +57,30 @@ Plug 'honza/vim-snippets'		    " snippets repo
 "
 "---------------------------------=== Other ===---------------------------------
 "
-Plug 'Shougo/neocomplete.vim'
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+    Plug 'Shougo/neocomplete.vim'
+endif 
 Plug 'ervandew/supertab'
+"--------------------------------=== Ansible ===--------------------------------
+"
+Plug 'pearofducks/ansible-vim'
+
 "----------------------------------=== Go ===-----------------------------------
 "
 Plug 'fatih/vim-go', { 'for': 'go' , 'do': ':GoInstallBinaries' }
 Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.local/share/nvim/gocode/vim/symlink.sh' }
 
+if has('nvim')
+    Plug 'zchee/deoplete-go', { 'do': 'make'}
+endif
+
+"--------------------------------=== Python ===---------------------------------
+"
+if has('nvim')
+    Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+endif
 "---------------------------------=== Other ===---------------------------------
 "
 Plug 'tpope/vim-fugitive'
@@ -133,7 +150,7 @@ set hidden                          " Buffer should still exist if window is clo
 set completeopt=menu,menuone        " Show popup menu, even if there is one entry
 set mps-=[:]
 set ttyfast
-set termguicolors
+"set termguicolors
 
 if has('unnamedplus')
   set clipboard^=unnamed
@@ -142,6 +159,13 @@ endif
 
 "-------------------------=== PLUGINS CONFIGURATION ===-------------------------
 "
+"-------------------------------=== Deoplate ===--------------------------------
+"
+if has('nvim')
+    let g:deoplete#sources#go#use_cache = 1
+    let g:deoplete#enable_at_startup = 1
+endif
+
 "----------------------------=== Nerd commenter ===-----------------------------
 "
 let g:NERDSpaceDelims = 1 " Add spaces after comment delimiters by default
@@ -302,6 +326,14 @@ augroup go
     au FileType go nmap <Leader>i <Plug>(go-info)
 augroup END
 
+"---------------------------------=== Yaml ===----------------------------------
+"
+augroup yaml
+    autocmd!
+    au FileType yaml set sw=4
+    au FileType yaml set ts=4
+    au FileType yaml set sts=4
+augroup END
 "--------------------------------=== Python ===---------------------------------
 "
 augroup python
