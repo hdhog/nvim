@@ -38,6 +38,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree' 	    	        " Project and file navigation
 Plug 'majutsushi/tagbar'          	        " Class/module browser
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tacahiroy/ctrlp-funky'
 Plug 'scrooloose/nerdcommenter'		        " Nerd comment
 Plug 'fisadev/FixedTaskList.vim'  	        " Pending tasks list
 Plug 'tpope/vim-surround'	   	            " Parentheses, brackets, quotes, XML tags, and more
@@ -150,7 +151,10 @@ set hidden                          " Buffer should still exist if window is clo
 set completeopt=menu,menuone        " Show popup menu, even if there is one entry
 set mps-=[:]
 set ttyfast
-"set termguicolors
+
+if has('gui_vimr')
+    set termguicolors
+endif
 
 if has('unnamedplus')
   set clipboard^=unnamed
@@ -224,7 +228,7 @@ let g:tagbar_left = 0
 let g:tagbar_autofocus = 1
 let g:tagbar_sort = 0 "tagbar shows tags in order of they created in file
 let g:tagbar_foldlevel = 1 "close tagbar folds by default
-let g:tagbar_width = 30
+let g:tagbar_width = 35
 let g:tagbar_compact = 1
 let g:tagbar_iconchars = ['▸', '▾']
 
@@ -277,6 +281,11 @@ vmap <F4> <Esc>:w!<CR>
 nmap <F5> :qa!<CR>
 imap <F5> <Esc>:qa!<CR>
 vmap <F5> <Esc>:qa!<CR>
+"------------------------------=== CtrlPFunky ===-------------------------------
+"
+nnoremap <Leader>fu :CtrlPFunky<Cr>
+" narrow the list down with a word under cursor
+nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 "--------------------------------=== TagBar ===---------------------------------
 "
 map <F3> :TagbarToggle<CR>
