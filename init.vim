@@ -3,7 +3,8 @@
 let vim_plug_url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 if has("unix")
     if has("nvim")
-	    let vim_plug_root="~/.local/share/nvim"
+		" let vim_plug_root="~/.local/share/nvim"
+	    let vim_plug_root="~/.config/nvim"
     	let vim_plug_plugged= vim_plug_root ."/plugged"
 	    let vim_plug=vim_plug_root . "/site/autoload/plug.vim"
     elseif has("vim")
@@ -56,25 +57,26 @@ Plug 'tomtom/tlib_vim'			    " dependencies #2
 Plug 'honza/vim-snippets'		    " snippets repo
 "--------------------=== Language and complation plugins ===--------------------
 "
+"--------------------------------=== Ansible ===--------------------------------
+"
 "---------------------------------=== Other ===---------------------------------
 "
+Plug 'tpope/vim-fugitive'
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
     Plug 'Shougo/neocomplete.vim'
 endif 
 Plug 'ervandew/supertab'
-"--------------------------------=== Ansible ===--------------------------------
-"
 Plug 'pearofducks/ansible-vim'
 
 "----------------------------------=== Go ===-----------------------------------
 "
 Plug 'fatih/vim-go', { 'for': 'go' , 'do': ':GoInstallBinaries' }
-Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.local/share/nvim/gocode/vim/symlink.sh' }
+Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 
 if has('nvim')
-    Plug 'zchee/deoplete-go', { 'do': 'make'}
+    Plug 'zchee/deoplete-go', { 'do': 'make', 'for': 'go'}
 endif
 
 "--------------------------------=== Python ===---------------------------------
@@ -82,10 +84,6 @@ endif
 if has('nvim')
     Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 endif
-"---------------------------------=== Other ===---------------------------------
-"
-Plug 'tpope/vim-fugitive'
-
 call plug#end()
 "-------------------------=== Global Configuration ===--------------------------
 "
@@ -149,9 +147,13 @@ highlight SpellBad ctermfg=Black ctermbg=Red
 set pumheight=10                    " Completion window max size
 set hidden                          " Buffer should still exist if window is closed
 set completeopt=menu,menuone        " Show popup menu, even if there is one entry
+" neocomplete like
+set completeopt+=noinsert
+" deoplete.nvim recommend
+set completeopt+=noselect
 set mps-=[:]
 set ttyfast
-
+" setlocal omnifunc=
 if has('gui_vimr')
     set termguicolors
 endif
@@ -166,8 +168,9 @@ endif
 "-------------------------------=== Deoplate ===--------------------------------
 "
 if has('nvim')
-    let g:deoplete#sources#go#use_cache = 1
     let g:deoplete#enable_at_startup = 1
+    let g:deoplete#sources#go#use_cache = 1
+    let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 endif
 
 "----------------------------=== Nerd commenter ===-----------------------------
@@ -261,6 +264,8 @@ let g:syntastic_enable_signs=1
 "
 "----------------------------------=== vim ===----------------------------------
 "
+" Exit terminal
+tnoremap <Esc> <C-\><C-n>
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
 nnoremap n nzzzv
