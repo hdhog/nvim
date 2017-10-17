@@ -79,6 +79,9 @@ if has('nvim')
     Plug 'zchee/deoplete-go', { 'do': 'make', 'for': 'go'}
 endif
 
+"------------------------------=== Powershell ===-------------------------------
+"
+Plug 'PProvost/vim-ps1', { 'for': 'ps1' }
 "--------------------------------=== Python ===---------------------------------
 "
 if has('nvim')
