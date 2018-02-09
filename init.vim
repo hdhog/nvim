@@ -241,6 +241,8 @@ let g:tagbar_iconchars = ['▸', '▾']
 "-------------------------------=== NerdTree ===--------------------------------
 "
 let g:NERDTreeDirArrows = 0
+let g:NERDTreeDirArrowExpandable = '+'
+let g:NERDTreeDirArrowCollapsible = '-'
 
 "----------------------------------=== vim-go ===-----------------------------------
 "
