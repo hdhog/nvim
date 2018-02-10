@@ -343,6 +343,8 @@ augroup go
     au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
     au FileType go nmap <Leader>dt <Plug>(go-def-tab)
     au FileType go nmap <Leader>i <Plug>(go-info)
+    au FileType go nmap <F7> <Plug>(go-coverage-toggle)
+    au FileType go nmap <F8> <Plug>(go-metalinter)
 augroup END
 
 "---------------------------------=== Yaml ===----------------------------------
