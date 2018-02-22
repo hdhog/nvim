@@ -13,6 +13,8 @@ elseif has("win32")
 	let vim_plug_root="~\\AppData\\Local\\nvim"
     let vim_plug_plugged= vim_plug_root ."\\plugged"
 	let vim_plug=vim_plug_root . "\\autoload\\plug.vim"
+    let g:python_host_prog='C:/Python27/python.exe'
+    let g:python3_host_prog='C:/Python36/python.exe'
 endif
 "---------------------------=== Install vim-plug ===----------------------------
 "
@@ -85,7 +87,7 @@ Plug 'PProvost/vim-ps1', { 'for': 'ps1' }
 "--------------------------------=== Python ===---------------------------------
 "
 if has('nvim')
-    Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+    Plug 'zchee/deoplete-jedi', { 'for': 'py' }
 endif
 call plug#end()
 "-------------------------=== Global Configuration ===--------------------------
