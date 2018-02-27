@@ -238,7 +238,7 @@ let g:tagbar_sort = 0 "tagbar shows tags in order of they created in file
 let g:tagbar_foldlevel = 1 "close tagbar folds by default
 let g:tagbar_width = 35
 let g:tagbar_compact = 1
-let g:tagbar_iconchars = ['▸', '▾']
+let g:tagbar_iconchars = ['+', '-']
 
 "-------------------------------=== NerdTree ===--------------------------------
 "
