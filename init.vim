@@ -32,8 +32,7 @@ call plug#begin(vim_plug_plugged)
 "------------------------------=== Appearance ===-------------------------------
 "
 Plug 'w0ng/vim-hybrid'
-Plug 'vim-airline/vim-airline'   	    	" Lean & mean status/tabline for vim
-Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
 "------------------------=== Code/project navigation ===------------------------
 "
 Plug 'scrooloose/nerdtree' 	    	        " Project and file navigation
@@ -107,7 +106,6 @@ set autoread 		                " перечитывать изменённые �
 set backspace=indent,eol,start whichwrap+=<,>,[,] "Удобное поведение backspace
 set ch=1                            " Сделать строку команд высотой в одну строку
 set completeopt=menu 	            " только доступные варианты автодополнени 		" не использовать свап файл для сброса буферовя
-" set foldcolumn=3 	                " Колоночка, чтобы показывать плюсики для скрытия блоков кода:
 set foldenable 		                " Включить сворачивание блоков кода
 set foldlevelstart=100              " Первые 100 блоков будет развернуты остальные свернуты
 set foldmethod=indent 	            " Тип сворачивания. по отступам
@@ -210,23 +208,8 @@ let g:neocomplete#enable_smart_case = 1
 let g:plug_shallow = 1
 let g:plug_window = "topleft new"
 "--------------------------------=== Airline ===--------------------------------
-"
+
 let g:enable_bold_font = 1
-let g:airline_theme = 'hybrid'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#tab_nr_type = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#syntastic#enabled = 1
-let airline#extensions#syntastic#error_symbol = 'E:'
-let airline#extensions#syntastic#stl_format_err = '%E{[%e(#%fe)]}'
-let airline#extensions#syntastic#warning_symbol = 'W:'
-let airline#extensions#syntastic#stl_format_err = '%W{[%w(#%fw)]}'
-let g:airline_powerline_fonts = 1
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline_symbols.space = "\ua0"
 
 "--------------------------------=== TagBar ===---------------------------------
 "
