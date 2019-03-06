@@ -1,11 +1,9 @@
 "---------------------------=== Set plugins Path ===----------------------------
-"
 let vim_plug_url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 if has("unix")
     if has("nvim")
-		" let vim_plug_root="~/.local/share/nvim"
-	    let vim_plug_root="~/.config/nvim"
-    	let vim_plug_plugged= vim_plug_root ."/plugged"
+		let vim_plug_root="~/.local/share/nvim"
+    	let vim_plug_plugged=vim_plug_root ."/plugged"
 	    let vim_plug=vim_plug_root . "/site/autoload/plug.vim"
     elseif has("vim")
     endif
