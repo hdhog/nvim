@@ -47,6 +47,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'vim-syntastic/syntastic'
+Plug 'hashivim/vim-terraform'
 "---------------------------=== Snippets support ===----------------------------
 "
 Plug 'SirVer/ultisnips'
